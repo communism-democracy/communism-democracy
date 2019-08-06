@@ -6,7 +6,7 @@
 
 OS：fedora31
 
-bottleを使用したappへの情報提供サーバとする予定
+bottleを使用し、appへの情報提供サーバとする予定
 
 ## app
 
