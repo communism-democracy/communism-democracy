@@ -6,4 +6,4 @@
 
 ### イメージ作成
 
-docker build -t <任意のタグ名> .
+docker build -t <任意の名称> .
