@@ -39,8 +39,16 @@ def on_message(self, message: str):
 
         # json形式からDictionary型への変換処理
         message = json.loads(message)
+        
+        # successnのキーが存在しかつ紐づく値がTrueであれば購読成功
+        if 'success' in message and message['success'] and message['request']['op'] == 'subscride':
+                # 購読成功時の処理
+                for coins in message["data"]:
+                        data["key"] = coins["synbol"]
+                        coindata = {"open": coins["open"],"close": coins["close"], "high": coins["high"], "low": coins["low"]}
+                        data["data"] = coindata
 
-        if message == "pong":
+        elif message == "pong":
                 # pongが返ってきた
                 print("通信成功")
                 flag == True
@@ -48,12 +56,6 @@ def on_message(self, message: str):
                 print("通信エラーを確認、再起動します")
                 flag == False
         
-        # successnのキーが存在しかつ紐づく値がTrueであれば購読成功
-        if 'success' in message and message['success'] and message['request']['op'] == 'subscride':
-                # 購読成功時の処理
-                pass
-        else:
-                pass
 
         
 # エラー発生時に実行する処理
@@ -80,13 +82,25 @@ def start_socket():
 
 def get_item():
         # 現在変数に保管してあるデータ（json）を渡す
+        print(data)
         return(data)
 
 def select_item(items):
         # appサイドから要求のあった通過の1分足情報の購読
         # appから送られてきたjsonデータをDictionary型へ変換する
         items = json.loads(items)
-        # forループ回してitemの数だけ購読する送信データに加える（処理は後で考えます）
+        args = None
+        # forループ回してitemの数だけ購読する送信データに加える
+        for selecter in items.values():
+                addItem = "tradeBin1m:" + selecter
+                if args == None:
+                        args += addItem
+                else:
+                        args += "," + addItem
+        
+        selectData = {"op": "subscride","args": [args]}
+        # BitMEXに向けて送信
+        ws.send(json.dumps(selectData))
 
 def stop_socket():
         # bitMEXサーバとの通信切断用処理
