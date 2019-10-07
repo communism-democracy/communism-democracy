@@ -42,7 +42,7 @@ def api_select(items):
         abort(500)
 
 @route('/api/v1/fin', method = ['POST', 'GET'])
-def api_stop:
+def api_stop():
     try:
         # 成功でWebSocket通信を終了させる
         return stop_socket()
