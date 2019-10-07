@@ -7,16 +7,6 @@ import sys
 # サーバとのやり取りを確認するための処理、確認不要の際はFalse
 websocket.enableTrace(True)
 
-# 接続先URIと各コールバック関数を引数に指定しWebSocketAppのインスタンスを作成
-ws = websocket.WebSocketApp(url = 'wss://www.bitmex.com/realtime',
-        on_open = on_open,
-        on_message = on_message,
-        on_close = on_close,
-        on_error = on_error)
-
-flag = False
-data = {"key":"","data":""}
-
 # サーバとの接続時に行う処理を記載
 def on_open(ws):
         ws.run_forever()
@@ -66,6 +56,17 @@ def on_error(ws, error):
 def on_close(ws):
         ws.send('close')
         ws.close()
+
+# 接続先URIと各コールバック関数を引数に指定しWebSocketAppのインスタンスを作成
+ws = websocket.WebSocketApp(url = 'wss://www.bitmex.com/realtime',
+        on_open = on_open,
+        on_message = on_message,
+        on_close = on_close,
+        on_error = on_error)
+
+flag = False
+data = {"key":"","data":""}
+
 
 def reload():
         os.execv(sys.executable, [sys.executable] + sys.argv)
