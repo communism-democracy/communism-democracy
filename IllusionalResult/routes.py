@@ -1,7 +1,7 @@
 from bottle import route, response, abort, request
 from utils import *
 
-@route('/', method = ['GET', 'POST'])
+@route('/api', method = ['GET', 'POST'])
 def api_stert():
     try:
         # 成功でWebSocket通信を開始
